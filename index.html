@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Super App Scommesse - Stand‑alone</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    /*
+     * Minimal styling for the stand‑alone betting utility.
+     * We avoid external dependencies to keep the page self‑contained.
+     */
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+      color: #212529;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 1rem;
+      background: #0d6efd;
+      color: white;
+      text-align: center;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+      padding: 1rem;
+      box-sizing: border-box;
+    }
+
+    .column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      overflow-y: auto;
+    }
+
+    .match-card, .pick-card {
+      background: white;
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .match-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .team-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+    }
+
+    .odds-row {
+      display: flex;
+      justify-content: space-around;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    button {
+      padding: 0.5rem 0.75rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button.pick-home { background: #198754; color: white; }
+    button.pick-draw { background: #6c757d; color: white; }
+    button.pick-away { background: #dc3545; color: white; }
+    button.delete-btn { background: #ffc107; color: #212529; margin-top: 0.5rem; }
+
+    .stats {
+      padding: 1rem;
+      background: white;
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    footer {
+      padding: 0.5rem;
+      text-align: center;
+      font-size: 0.875rem;
+      background: #f1f3f5;
+      border-top: 1px solid #dee2e6;
+    }
+
+    /* Scrollbars for overflow columns */
+    .column::-webkit-scrollbar {
+      width: 8px;
+    }
+    .column::-webkit-scrollbar-thumb {
+      background-color: rgba(0,0,0,0.2);
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Super App Scommesse</h1>
+    <p>Raccogli partite e registra le tue giocate in autonomia.</p>
+  </header>
+  <main>
+    <!-- React will render the entire application layout into this container. -->
+    <div id="app-root" style="flex: 1; width: 100%;"></div>
+  </main>
+  <footer>
+    &copy; 2026 Super App Scommesse. Dati forniti da <a href="https://api.football-data.org" target="_blank">football-data.org</a>.
+  </footer>
+
+  <!-- Load React and ReactDOM from unpkg CDN -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script>
+    // Safety: some browsers might not support optional chaining; provide a simple polyfill for older environments.
+    // This script ensures fetch API is available and provides a fallback for older browsers.
+    (function() {
+      if (!('fetch' in window)) {
+        alert('Questo browser non supporta fetch. Per favore usane uno più recente.');
+      }
+    })();
+  </script>
+  <!-- Main application logic -->
+  <!-- app.js viene caricato come script tradizionale per poter utilizzare le variabili globali React/ReactDOM. -->
+  <script src="app.js"></script>
+  <script>
+    // Registra il service worker per trasformare l'app in PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('sw.js').catch(function(err) {
+          console.error('Service Worker registration failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
